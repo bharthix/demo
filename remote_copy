@@ -1,0 +1,29 @@
+#!/usr/bin/expect
+# Script to execute any command on the target m/c
+# MACH-Machine name
+# PASSWD-Machine password
+# USER-User used to connect to the machine
+# OPERATION-Any command eg  mkdir,rmdir etc
+# Increase timeout to 2000
+
+ set PASSWD [lindex $argv 0]
+ set from [lindex $argv 1]
+ set to [lindex $argv 2]
+ set timeout [lindex $argv 3]
+ if {$timeout == "" } {
+    set timeout 2000
+ }
+
+ # first make sure we don't have an old invalid SSH certificate
+ # exec sed -i "/^$host/d" $env(HOME)/.ssh/known_hosts
+
+ spawn scp -r -o StrictHostKeyChecking=no $from $to
+ expect {
+ "*assword*" {
+             send "$PASSWD\n"
+             expect eof
+             }
+ "*]*" {
+        expect eof
+       }
+ }
