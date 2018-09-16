@@ -1,1 +1,3 @@
 Exploring how branching works
+
+Fixing made for the HOT BUG today
